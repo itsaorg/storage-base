@@ -1,0 +1,7 @@
+@itsaorg/dbms-base
+Zero-dependency TypeScript contracts for Itsa DBMS stores, queries, transactions, and buffer boundaries.
+
+Copyright 2026 Astitv Singh
+
+This product is licensed under the Apache License, Version 2.0.
+See the LICENSE file in this directory.

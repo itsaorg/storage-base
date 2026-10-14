@@ -1,0 +1,22 @@
+name: Feature request
+description: Propose a contract change
+labels: [feature]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+    validations:
+      required: true
+  - type: textarea
+    id: change
+    attributes:
+      label: Proposed change
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance
+    validations:
+      required: true

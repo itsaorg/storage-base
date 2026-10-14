@@ -1,0 +1,10 @@
+name: Chore or docs
+description: Tooling, docs, or maintenance
+labels: [chore]
+body:
+  - type: textarea
+    id: change
+    attributes:
+      label: Change
+    validations:
+      required: true
