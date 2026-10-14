@@ -26,10 +26,8 @@
   },
   "keywords": [],
   "type": "module",
-  "bugs": {
-    "url": "https://github.com/itsaorg/storage-base/issues"
-  },
-  "homepage": "https://github.com/itsaorg/storage-base#readme",
+  "bugs": "https://github.com/itsaorg/storage-base/issues",
+  "homepage": "https://itsaorg.github.io/storage-base/",
   "license": "Apache-2.0",
   "engines": {
     "node": "26"

@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Report a defect in dbms-base
+about: Report a defect in this repository
 labels: bug
 ---
 

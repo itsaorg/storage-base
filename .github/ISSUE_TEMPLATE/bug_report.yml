@@ -1,5 +1,5 @@
 name: Bug report
-description: Report a defect in dbms-base
+description: Report a defect in this repository
 labels: [bug]
 body:
   - type: textarea

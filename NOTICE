@@ -1,5 +1,5 @@
-@itsaorg/dbms-base
-Zero-dependency TypeScript contracts for Itsa DBMS stores, queries, transactions, and buffer boundaries.
+@itsaorg/storage-base
+Zero-dependency TypeScript contracts for Itsa storage addresses, pages, I/O, lifecycle, and errors.
 
 Copyright 2026 Astitv Singh
 

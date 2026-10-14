@@ -1,4 +1,5 @@
 {
+  "name": "@itsaorg/storage-base",
   "entryPoints": ["../src/index.ts"],
   "out": "../docs"
 }
