@@ -1,22 +1,30 @@
 #!/usr/bin/env sh
 # =============================================================================
-# 🚀 pre-push — run the test suite once before push
+# 🚀 pre-push — full CI gate before push (npm package.scripts, no coverage/)
 # =============================================================================
-# 📌 Uses `npm test -- --run` so Vitest never enters watch mode on a TTY.
-#    Parity with CI test gate. Package-agnostic via .husky/common.sh.
+# 📌 Runs typecheck → format:check → lint → layout → test:run → build.
+#    Does not run lint-staged or test:coverage (no coverage/ writes on push).
 # ▶️ Skip once: HUSKY=0 git push …
 # =============================================================================
 
+# 📁 HUSKY_DIR: absolute path to this .husky directory
 HUSKY_DIR="$(CDPATH= cd -- "$(dirname "$0")" && pwd)"
+# 📥 source: load shared helpers and run_ci_gate
 . "$HUSKY_DIR/common.sh"
 
+# 🏷️ print hook banner with dynamic package identity
 log_hook_banner "pre-push"
-log_go "Running npm test -- --run…"
 
-if npm test -- --run; then
+# 🧪 run shared CI gate via npm run scripts
+if run_ci_gate; then
+  # ✅ push may proceed
   log_ok "pre-push passed for ${PKG_NAME}@${PKG_VERSION}"
+  # 🚪 exit 0: allow push
   exit 0
+# ❌ else: a gate step failed
 fi
 
-log_err "pre-push failed (tests). Fix failing tests before pushing."
+# ❌ gate failure message
+log_err "pre-push failed (CI gate). Fix checks before pushing."
+# 🚪 exit 1: abort push
 exit 1

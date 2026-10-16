@@ -6,11 +6,17 @@
 #    No network side effects. Safe in any repo using .husky/common.sh.
 # =============================================================================
 
+# 📁 HUSKY_DIR: absolute path to this .husky directory
 HUSKY_DIR="$(CDPATH= cd -- "$(dirname "$0")" && pwd)"
+# 📥 source: load shared helpers (PKG_*, logs)
 . "$HUSKY_DIR/common.sh"
 
+# 🏷️ print hook banner with dynamic package identity
 log_hook_banner "post-commit"
 
+# 🔖 _short_sha: abbreviated HEAD commit hash (or "?" if git fails)
 _short_sha="$(git rev-parse --short HEAD 2>/dev/null || printf '%s' '?')"
+# ✅ success line with SHA and package identity
 log_ok "Committed ${_short_sha} — ${PKG_NAME}@${PKG_VERSION}"
+# 🚪 exit 0: post-commit never blocks
 exit 0
