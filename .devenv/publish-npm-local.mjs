@@ -10,6 +10,7 @@
  *
  * - No `--provenance` (provenance is for CI / `publish-npm-worker.mjs`).
  * - Publish path requires a TTY confirmation; non-TTY with a free name fails.
+ * - After publish, polls npm for up to 300s before treating reservation as done.
  * - Package-agnostic: reads `../package.json` relative to `.devenv/`.
  *
  * @module publish-npm-local
@@ -28,6 +29,7 @@ import {
   readPublishedVersion,
   requireNpmWhoami,
   run,
+  waitForPackageNameOnRegistry,
 } from "./publish-npm-lib.mjs";
 
 /**
@@ -39,7 +41,9 @@ async function main() {
   logGo("publish:npm:local — interactive name reservation");
 
   const { name, version, spec } = readPackageIdentity();
-  logInfo(`Local package: ${spec}`);
+  logInfo(`Package name: ${name}`);
+  logInfo(`Local version: ${version}`);
+  logInfo(`Publish spec: ${spec}`);
 
   const user = requireNpmWhoami();
   logOk(`npm whoami: ${user}`);
@@ -55,7 +59,7 @@ async function main() {
     return;
   }
 
-  logInfo(`${name} is not on the registry yet.`);
+  logInfo(`${name}@${version} is not on the registry yet.`);
 
   if (!isInteractive()) {
     logError(
@@ -66,7 +70,7 @@ async function main() {
   }
 
   const confirmed = await askYesNo(
-    `Publish ${spec} with --access public (no provenance) to reserve the name?`,
+    `Publish ${name}@${version} (${spec}) with --access public (no provenance) to reserve the name?`,
     false,
   );
   if (!confirmed) {
@@ -78,17 +82,22 @@ async function main() {
   logGo("Building package…");
   run("npm run build");
 
-  logGo(`Publishing ${spec}…`);
+  logGo(`Publishing ${name}@${version}…`);
   run("npm publish --access public");
 
-  const after = readPublishedVersion(name);
+  const after = await waitForPackageNameOnRegistry(name, {
+    timeoutMs: 300_000,
+    intervalMs: 10_000,
+  });
   if (!after) {
-    logError(`Publish finished but npm view "${name}" version still fails.`);
+    logError(
+      `Publish finished but npm still does not show "${name}" after 300s. Check https://www.npmjs.com/package/${name} manually.`,
+    );
     process.exitCode = 1;
     return;
   }
 
-  logOk(`Reserved ${name} on npm (version ${after}).`);
+  logOk(`Reserved ${name} on npm (registry version ${after}; local was ${version}).`);
   process.exitCode = 0;
 }
 

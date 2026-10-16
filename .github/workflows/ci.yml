@@ -1,18 +1,46 @@
+# =============================================================================
+# 🧪 CI — continuous integration on every push/PR to main and develop
+# =============================================================================
+# 📌 Purpose: prove typecheck, format, lint, layout, tests, and build are green
+#    before merge. Does NOT publish to npm (see workflows/release.yml for that).
+# ▶️ Example trigger: push a commit to `main`, or open a PR into `develop`.
+# =============================================================================
+
+# 🏷️ name: workflow display name in the GitHub Actions UI
 name: ci
+
+# 🔔 on: events that start this workflow
 on:
+  # 📤 push: run when commits land on these branch tips
   push:
+    # 🌿 branches: only these branch names (not every branch)
     branches: [main, develop]
+  # 🔀 pull_request: run on PRs targeting these branches
   pull_request:
+    # 🌿 branches: base branches that receive the PR
     branches: [main, develop]
+
+# 🧩 jobs: named work units (one job here)
 jobs:
+  # 🆔 ci: job id used in the UI and for needs:/status checks
   ci:
+    # 🖥️ runs-on: GitHub-hosted runner image
     runs-on: ubuntu-latest
+    # 📋 steps: ordered actions and shell commands
     steps:
+      # ⬇️ checkout: clone this repo into the runner workspace
       - uses: actions/checkout@v7
+      # 🧰 setup: composite action — Node from .nvmrc + npm ci
       - uses: ./.github/actions/setup
+      # ✅ typecheck: tsc --noEmit
       - run: npm run typecheck
+      # 🎨 format:check: Prettier must already match (no write)
       - run: npm run format:check
+      # 🧹 lint: ESLint over the repo
       - run: npm run lint
+      # 📐 check:layout: one principal per source file
       - run: npm run check:layout
+      # 🧪 test: Vitest (unit / consumer / integration globs)
       - run: npm test
+      # 📦 build: emit dist/ via tsc
       - run: npm run build

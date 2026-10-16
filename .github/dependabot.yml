@@ -1,9 +1,26 @@
+# =============================================================================
+# 🤖 Dependabot — automated dependency update PRs
+# =============================================================================
+# 📌 Purpose: weekly PRs for npm deps and GitHub Actions versions.
+# ⚠️ Path is REQUIRED: `.github/dependabot.yml` (or `.yaml`).
+#    Do NOT move this under `.github/workflows/` — GitHub will ignore it there.
+# ▶️ Example: Dependabot opens a PR bumping eslint; CI runs on that PR.
+# =============================================================================
+
+# 🔢 version: Dependabot config schema version (always 2 today)
 version: 2
+
+# 📦 updates: list of ecosystems to monitor
 updates:
+  # 📗 npm ecosystem (package.json / package-lock.json)
   - package-ecosystem: npm
+    # 📁 directory: repo-relative path containing the manifest ("/" = root)
     directory: /
+    # 🗓️ schedule: how often Dependabot checks
     schedule:
+      # ⏱️ interval: weekly | daily | monthly
       interval: weekly
+    # 🚫 ignore: skip noisy major bumps for selected packages
     ignore:
       - dependency-name: typescript
         update-types: ["version-update:semver-major"]
@@ -11,7 +28,9 @@ updates:
         update-types: ["version-update:semver-major"]
       - dependency-name: "@vitest/coverage-v8"
         update-types: ["version-update:semver-major"]
+  # ⚙️ github-actions ecosystem (uses: actions/* in workflows)
   - package-ecosystem: github-actions
+    # 📁 directory: "/" scans all workflow files under .github/workflows
     directory: /
     schedule:
       interval: weekly

@@ -1,25 +1,64 @@
+# =============================================================================
+# 🚀 release — publish to npm + GitHub Release on version tags
+# =============================================================================
+# 📌 Purpose: on `v*` tag push, re-run CI gates, `npm run release:npm`
+#    (build + publish:npm:worker with OIDC provenance), then
+#    `gh release create` with generated notes.
+# 🔐 Trusted Publishing: npm Trusted Publisher must list THIS filename
+#    (`release.yml`) for org/repo — not `.github/release.yml` (that file is
+#    only changelog categories for auto-generated release notes).
+# ▶️ Example trigger: `git push origin v0.1.0` after git-flow release finish.
+# =============================================================================
+
+# 🏷️ name: workflow display name in the GitHub Actions UI
 name: release
+
+# 🔔 on: events that start this workflow
 on:
+  # 📤 push: run when refs are pushed
   push:
+    # 🏷️ tags: only annotated/lightweight tags matching the glob
     tags:
+      # ✅ "v*": e.g. v0.1.0, v1.2.3 — not branch names
       - "v*"
+
+# 🔐 permissions: token scopes for this workflow (OIDC + releases)
 permissions:
+  # 📝 contents: write — create GitHub Releases / tags metadata
   contents: write
+  # 🪪 id-token: write — required for npm Trusted Publishing (OIDC)
   id-token: write
+
+# 🧩 jobs: named work units
 jobs:
+  # 🆔 release: single publish job
   release:
+    # 🖥️ runs-on: GitHub-hosted runner image
     runs-on: ubuntu-latest
+    # 📋 steps: ordered actions and shell commands
     steps:
+      # ⬇️ checkout: clone at the pushed tag
       - uses: actions/checkout@v7
+      # 🧰 setup: Node from .nvmrc + npm ci
       - uses: ./.github/actions/setup
+      # ✅ typecheck
       - run: npm run typecheck
+      # 🎨 format:check
       - run: npm run format:check
+      # 🧹 lint
       - run: npm run lint
+      # 📐 check:layout
       - run: npm run check:layout
+      # 🧪 test
       - run: npm test
+      # 📦 build (also run again inside release:npm)
       - run: npm run build
+      # 🚢 release:npm: build + publish:npm:worker (idempotent name@version)
       - run: npm run release:npm
+      # 📢 Create GitHub Release from the tag with auto notes
       - name: Create GitHub Release
+        # 🔑 env: GH_TOKEN for gh CLI auth (default GITHUB_TOKEN)
         env:
           GH_TOKEN: ${{ github.token }}
+        # 🏷️ GITHUB_REF_NAME: tag name (e.g. v0.1.0)
         run: gh release create "${GITHUB_REF_NAME}" --generate-notes --verify-tag

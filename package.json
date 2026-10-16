@@ -20,6 +20,8 @@
     "release:version": "changeset version",
     "publish:npm:local": "node .devenv/publish-npm-local.mjs",
     "publish:npm:worker": "node .devenv/publish-npm-worker.mjs",
+    "trust:npm": "node .devenv/trust-npm-github.mjs",
+    "deprecate:npm:reservation": "node .devenv/deprecate-npm-reservation.mjs",
     "release:npm": "npm run build && npm run publish:npm:worker"
   },
   "repository": {

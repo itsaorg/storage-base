@@ -13,6 +13,7 @@
 
 import { execSync } from "node:child_process";
 import { readFileSync } from "node:fs";
+import { setTimeout as delay } from "node:timers/promises";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 import readline from "node:readline/promises";
@@ -224,4 +225,112 @@ export function readPublishedVersion(name) {
   } catch {
     return null;
   }
+}
+
+/**
+ * Sleeps for a number of milliseconds.
+ *
+ * @param {number} ms - Duration to wait.
+ * @returns {Promise<void>} Resolves after the delay.
+ */
+export function sleep(ms) {
+  return delay(ms);
+}
+
+/**
+ * Polls the registry until the package name appears or the timeout elapses.
+ *
+ * 💡 npm can lag after a successful `npm publish`; call this before treating
+ * reservation as verified. Default timeout is 300 seconds.
+ *
+ * @param {string} name - Package name to look up.
+ * @param {{ timeoutMs?: number, intervalMs?: number }} [options] - Poll budget
+ *   and interval (`timeoutMs` default `300000`, `intervalMs` default `10000`).
+ * @returns {Promise<string | null>} Published version string, or `null` if still
+ *   missing after the timeout.
+ */
+export async function waitForPackageNameOnRegistry(name, options = {}) {
+  const timeoutMs = options.timeoutMs ?? 300_000;
+  const intervalMs = options.intervalMs ?? 10_000;
+  const started = Date.now();
+  let attempt = 0;
+
+  logInfo(
+    `Waiting up to ${Math.round(timeoutMs / 1000)}s for npm to show ${name} (poll every ${Math.round(intervalMs / 1000)}s)…`,
+  );
+
+  while (Date.now() - started < timeoutMs) {
+    attempt += 1;
+    const version = readPublishedVersion(name);
+    if (version) {
+      logOk(
+        `Registry shows ${name}@${version} after ~${Math.round((Date.now() - started) / 1000)}s (${attempt} poll(s)).`,
+      );
+      return version;
+    }
+    const elapsed = Math.round((Date.now() - started) / 1000);
+    const remaining = Math.max(0, Math.round((timeoutMs - (Date.now() - started)) / 1000));
+    logInfo(`Poll #${attempt}: not visible yet (elapsed ${elapsed}s, ~${remaining}s left).`);
+    const slice = Math.min(intervalMs, timeoutMs - (Date.now() - started));
+    if (slice <= 0) {
+      break;
+    }
+    await sleep(slice);
+  }
+
+  const finalVersion = readPublishedVersion(name);
+  if (finalVersion) {
+    logOk(`Registry shows ${name}@${finalVersion} on final check.`);
+    return finalVersion;
+  }
+  logError(`Timed out after ${Math.round(timeoutMs / 1000)}s waiting for ${name} on npm.`);
+  return null;
+}
+
+/**
+ * Parses `owner/repo` from a git remote URL (SSH or HTTPS GitHub forms).
+ *
+ * @param {string} remoteUrl - Output of `git remote get-url origin`.
+ * @returns {string | null} `owner/repo` or null when unparseable.
+ */
+export function parseGithubOwnerRepo(remoteUrl) {
+  const trimmed = remoteUrl.trim().replace(/\.git$/i, "");
+  const ssh = trimmed.match(/^git@github\.com:([^/]+)\/(.+)$/i);
+  if (ssh) {
+    return `${ssh[1]}/${ssh[2]}`;
+  }
+  const https = trimmed.match(/^https?:\/\/github\.com\/([^/]+)\/(.+)$/i);
+  if (https) {
+    return `${https[1]}/${https[2]}`;
+  }
+  return null;
+}
+
+/**
+ * Resolves `owner/repo` from the local `origin` remote.
+ *
+ * @returns {string} GitHub `owner/repo`.
+ * @throws {Error} When origin is missing or not a GitHub URL.
+ */
+export function requireGithubOwnerRepo() {
+  let remoteUrl;
+  try {
+    remoteUrl = run("git remote get-url origin", { inherit: false });
+  } catch {
+    throw new Error("git remote get-url origin failed. Set origin to the GitHub repo first.");
+  }
+  const ownerRepo = parseGithubOwnerRepo(remoteUrl);
+  if (!ownerRepo) {
+    throw new Error(`Could not parse GitHub owner/repo from origin: ${remoteUrl}`);
+  }
+  return ownerRepo;
+}
+
+/**
+ * Whether `-y` / `--yes` was passed on the process argv.
+ *
+ * @returns {boolean} True when non-interactive yes was requested.
+ */
+export function hasYesFlag() {
+  return process.argv.slice(2).some((arg) => arg === "-y" || arg === "--yes");
 }
