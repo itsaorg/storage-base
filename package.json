@@ -18,7 +18,9 @@
     "docs": "typedoc --options configs/typedoc.json",
     "release:status": "changeset status --verbose",
     "release:version": "changeset version",
-    "release:npm": "npm run build && node .devenv/publish-if-missing.mjs"
+    "publish:npm:local": "node .devenv/publish-npm-local.mjs",
+    "publish:npm:worker": "node .devenv/publish-npm-worker.mjs",
+    "release:npm": "npm run build && npm run publish:npm:worker"
   },
   "repository": {
     "type": "git",
