@@ -41,6 +41,6 @@ jobs:
       # 📐 check:layout: one principal per source file
       - run: npm run check:layout
       # 🧪 test: Vitest (unit / consumer / integration globs)
-      - run: npm test
+      - run: npm run test
       # 📦 build: emit dist/ via tsc
       - run: npm run build
