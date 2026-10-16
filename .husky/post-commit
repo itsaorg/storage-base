@@ -1,1 +1,16 @@
 #!/usr/bin/env sh
+# =============================================================================
+# 🎉 post-commit — local success notice after a commit lands
+# =============================================================================
+# 📌 Reserved follow-up hook: logs package identity + short SHA only.
+#    No network side effects. Safe in any repo using .husky/common.sh.
+# =============================================================================
+
+HUSKY_DIR="$(CDPATH= cd -- "$(dirname "$0")" && pwd)"
+. "$HUSKY_DIR/common.sh"
+
+log_hook_banner "post-commit"
+
+_short_sha="$(git rev-parse --short HEAD 2>/dev/null || printf '%s' '?')"
+log_ok "Committed ${_short_sha} — ${PKG_NAME}@${PKG_VERSION}"
+exit 0

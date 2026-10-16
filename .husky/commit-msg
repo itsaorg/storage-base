@@ -1,1 +1,23 @@
-npx --no -- commitlint --config configs/commitlint.config.js --edit "$1"
+#!/usr/bin/env sh
+# =============================================================================
+# 💬 commit-msg — Conventional Commits via Commitlint
+# =============================================================================
+# 📌 Validates the commit message file ($1) against configs/commitlint.config.js
+#    (path resolved dynamically from the repo root).
+# ▶️ Skip once: HUSKY=0 git commit …
+# =============================================================================
+
+HUSKY_DIR="$(CDPATH= cd -- "$(dirname "$0")" && pwd)"
+. "$HUSKY_DIR/common.sh"
+
+log_hook_banner "commit-msg"
+log_info "Commitlint config: ${COMMITLINT_CONFIG}"
+log_go "Checking commit message…"
+
+if npx --no -- commitlint --config "$COMMITLINT_CONFIG" --edit "$1"; then
+  log_ok "commit-msg passed for ${PKG_NAME}@${PKG_VERSION}"
+  exit 0
+fi
+
+log_err "commit-msg failed (Commitlint). Use Conventional Commits (feat:/fix:/chore:/…)."
+exit 1

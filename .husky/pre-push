@@ -1,1 +1,22 @@
-npm test
+#!/usr/bin/env sh
+# =============================================================================
+# 🚀 pre-push — run the test suite once before push
+# =============================================================================
+# 📌 Uses `npm test -- --run` so Vitest never enters watch mode on a TTY.
+#    Parity with CI test gate. Package-agnostic via .husky/common.sh.
+# ▶️ Skip once: HUSKY=0 git push …
+# =============================================================================
+
+HUSKY_DIR="$(CDPATH= cd -- "$(dirname "$0")" && pwd)"
+. "$HUSKY_DIR/common.sh"
+
+log_hook_banner "pre-push"
+log_go "Running npm test -- --run…"
+
+if npm test -- --run; then
+  log_ok "pre-push passed for ${PKG_NAME}@${PKG_VERSION}"
+  exit 0
+fi
+
+log_err "pre-push failed (tests). Fix failing tests before pushing."
+exit 1

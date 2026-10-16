@@ -1,1 +1,22 @@
-npx --no -- lint-staged
+#!/usr/bin/env sh
+# =============================================================================
+# 🔒 pre-commit — lint-staged on staged files
+# =============================================================================
+# 📌 Runs Prettier + ESLint (via package.json lint-staged) before the commit
+#    object is created. Package-agnostic: uses .husky/common.sh.
+# ▶️ Skip once: HUSKY=0 git commit …
+# =============================================================================
+
+HUSKY_DIR="$(CDPATH= cd -- "$(dirname "$0")" && pwd)"
+. "$HUSKY_DIR/common.sh"
+
+log_hook_banner "pre-commit"
+log_go "Running lint-staged…"
+
+if npx --no -- lint-staged; then
+  log_ok "pre-commit passed for ${PKG_NAME}@${PKG_VERSION}"
+  exit 0
+fi
+
+log_err "pre-commit failed (lint-staged). Fix staged files and retry."
+exit 1
