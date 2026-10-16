@@ -1,35 +1,20 @@
 #!/usr/bin/env sh
 # =============================================================================
-# 💬 commit-msg — Conventional Commits via npm run commitlint
+# 💬 commit-msg — npm run commitlint -- --edit
 # =============================================================================
-# 📌 Validates the commit message file ($1) using the package.json script
-#    "commitlint" (configs/commitlint.config.js).
 # ▶️ Skip once: HUSKY=0 git commit …
 # =============================================================================
 
-# 📁 HUSKY_DIR: absolute path to this .husky directory
 HUSKY_DIR="$(CDPATH= cd -- "$(dirname "$0")" && pwd)"
-# 📥 source: load shared helpers (REPO_ROOT, PKG_*, logs)
 . "$HUSKY_DIR/common.sh"
 
-# 🏷️ print hook banner with dynamic package identity
 log_hook_banner "commit-msg"
-# ℹ️ show which Commitlint config the package script uses
-log_info "Commitlint config: ${COMMITLINT_CONFIG}"
-# ▶️ announce message validation
-log_go "commitlint (Conventional Commits)"
 
-# ✅ if: npm run commitlint -- --edit "$1" succeeds
-# 📥 $1: path to the commit message file from Git
+log_go "npm run commitlint"
 if npm run commitlint -- --edit "$1"; then
-  # ✅ message accepted
   log_ok "commit-msg passed for ${PKG_NAME}@${PKG_VERSION}"
-  # 🚪 exit 0: allow commit to finalize
   exit 0
-# ❌ else: Commitlint rejected the message
 fi
 
-# ❌ guidance for Conventional Commits
-log_err "commit-msg failed (Commitlint). Use Conventional Commits (feat:/fix:/chore:/…)."
-# 🚪 exit 1: abort commit
+log_err "commit-msg failed (Commitlint). Use Conventional Commits."
 exit 1

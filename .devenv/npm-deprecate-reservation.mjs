@@ -1,17 +1,17 @@
+#!/usr/bin/env node
 // Copyright 2026 Astitv Singh <https://github.com/astitvsingh>.
 // SPDX-License-Identifier: Apache-2.0
 
 /**
- * Deprecates the name-reservation version (`0.0.0`) after a real release exists.
+ * npm script `npm:deprecate:reservation` — deprecate name-reservation `0.0.0`.
  *
- * 💡 Run only after `0.1.0` (or later) is on the registry (R2 Task 20). Refuses
- * when latest is still `0.0.0`. Package-agnostic: reads `../package.json`.
- *
- * @module deprecate-npm-reservation
+ * @module npm-deprecate-reservation
  */
 
 import {
   askYesNo,
+  boxBanner,
+  boxDone,
   hasYesFlag,
   isInteractive,
   logError,
@@ -24,7 +24,7 @@ import {
   readPublishedVersion,
   requireNpmWhoami,
   run,
-} from "./publish-npm-lib.mjs";
+} from "./tool-lib.mjs";
 
 /** @type {string} Semver used only to reserve the scoped name. */
 const RESERVATION_VERSION = "0.0.0";
@@ -39,11 +39,8 @@ const DEPRECATE_REASON =
  * @returns {Promise<void>}
  */
 async function main() {
-  logGo("deprecate:npm:reservation — deprecate name-reservation 0.0.0");
-
   const { name, version } = readPackageIdentity();
-  logInfo(`Package name: ${name}`);
-  logInfo(`Local version: ${version}`);
+  boxBanner(`▶️  npm:deprecate:reservation — ${name}@${version}`);
   logInfo(`Reservation target: ${name}@${RESERVATION_VERSION}`);
 
   const user = requireNpmWhoami();
@@ -94,6 +91,7 @@ async function main() {
   run(`npm deprecate "${reservationSpec}" "${DEPRECATE_REASON}"`);
   logOk(`Deprecated ${reservationSpec}.`);
   logInfo(`Verify: npm view ${reservationSpec} deprecated`);
+  boxDone("npm:deprecate:reservation");
   process.exitCode = 0;
 }
 

@@ -1,20 +1,16 @@
+#!/usr/bin/env node
 // Copyright 2026 Astitv Singh <https://github.com/astitvsingh>.
 // SPDX-License-Identifier: Apache-2.0
 
 /**
- * Non-interactive, idempotent npm publish for CI / tag releases (worker).
+ * npm script `npm:publish:worker` — non-interactive publish-if-missing (CI).
  *
- * 💡 Used by `npm run release:npm` (and thus `.github/workflows/release.yml` on
- * `v*` tags). Skips when `name@version` is already on the registry. Adds
- * `--provenance` only when `GITHUB_ACTIONS` is set. Does not run `build`
- * (the caller must build first).
- *
- * Package-agnostic: reads `../package.json` relative to `.devenv/`.
- *
- * @module publish-npm-worker
+ * @module npm-publish-worker
  */
 
 import {
+  boxBanner,
+  boxDone,
   logError,
   logGo,
   logInfo,
@@ -23,17 +19,16 @@ import {
   packageSpecExistsOnRegistry,
   readPackageIdentity,
   run,
-} from "./publish-npm-lib.mjs";
+} from "./tool-lib.mjs";
 
 /**
- * Publishes the current `package.json` version when missing from the registry.
+ * Publishes the current package.json version when missing from the registry.
  *
  * @returns {void}
  */
 function main() {
-  logGo("publish:npm:worker — non-interactive publish-if-missing");
-
-  const { spec } = readPackageIdentity();
+  const { name, version, spec } = readPackageIdentity();
+  boxBanner(`▶️  npm:publish:worker — ${name}@${version}`);
   logInfo(`Local package: ${spec}`);
 
   if (packageSpecExistsOnRegistry(spec)) {
@@ -46,6 +41,7 @@ function main() {
   logGo(`Publishing ${spec}${provenance ? " with provenance" : ""}…`);
   run(`npm publish --access public${provenance}`);
   logOk(`Published ${spec}.`);
+  boxDone("npm:publish:worker");
   process.exitCode = 0;
 }
 

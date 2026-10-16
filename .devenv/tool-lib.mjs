@@ -1,14 +1,14 @@
+#!/usr/bin/env node
 // Copyright 2026 Astitv Singh <https://github.com/astitvsingh>.
 // SPDX-License-Identifier: Apache-2.0
 
 /**
- * Shared helpers for package-agnostic npm publish scripts under `.devenv/`.
+ * Shared helpers for package-agnostic `.devenv` tool scripts.
  *
- * 💡 Used by `publish-npm-local.mjs` (interactive name reservation) and
- * `publish-npm-worker.mjs` (non-interactive tag / CI publish). Safe to copy
- * into any repo that keeps `package.json` one level above `.devenv/`.
+ * 💡 Boxed emoji logging, repo identity, command runners, and TTY prompts.
+ * Safe to copy into any repo that keeps `package.json` one level above `.devenv/`.
  *
- * @module publish-npm-lib
+ * @module tool-lib
  */
 
 import { execSync } from "node:child_process";
@@ -55,11 +55,20 @@ export function readPackageIdentity() {
 }
 
 /**
+ * Extra argv after the script name (npm forwards after `--`).
+ *
+ * @returns {string[]} Forwardable CLI arguments.
+ */
+export function forwardedArgs() {
+  return process.argv.slice(2);
+}
+
+/**
  * Runs a shell command in the repo root.
  *
  * @param {string} command - Full command line.
  * @param {{ inherit?: boolean }} [options] - When `inherit` is true (default),
- *   pipe stdio to the parent; otherwise capture and discard.
+ *   pipe stdio to the parent; otherwise capture stdout.
  * @returns {string} Captured stdout when not inheriting; otherwise `""`.
  */
 export function run(command, options = {}) {
@@ -75,7 +84,7 @@ export function run(command, options = {}) {
 /**
  * Logs an informational line.
  *
- * @param {string} message - Message body (emoji prefix added).
+ * @param {string} message - Message body.
  * @returns {void}
  */
 export function logInfo(message) {
@@ -85,7 +94,7 @@ export function logInfo(message) {
 /**
  * Logs a success line.
  *
- * @param {string} message - Message body (emoji prefix added).
+ * @param {string} message - Message body.
  * @returns {void}
  */
 export function logOk(message) {
@@ -95,7 +104,7 @@ export function logOk(message) {
 /**
  * Logs a skip / no-op line.
  *
- * @param {string} message - Message body (emoji prefix added).
+ * @param {string} message - Message body.
  * @returns {void}
  */
 export function logSkip(message) {
@@ -105,7 +114,7 @@ export function logSkip(message) {
 /**
  * Logs an error line.
  *
- * @param {string} message - Message body (emoji prefix added).
+ * @param {string} message - Message body.
  * @returns {void}
  */
 export function logError(message) {
@@ -115,7 +124,7 @@ export function logError(message) {
 /**
  * Logs a prompt / question line.
  *
- * @param {string} message - Message body (emoji prefix added).
+ * @param {string} message - Message body.
  * @returns {void}
  */
 export function logAsk(message) {
@@ -125,11 +134,92 @@ export function logAsk(message) {
 /**
  * Logs a start / action line.
  *
- * @param {string} message - Message body (emoji prefix added).
+ * @param {string} message - Message body.
  * @returns {void}
  */
 export function logGo(message) {
   console.log(`▶️  ${message}`);
+}
+
+/**
+ * Prints a prettified box banner around a title.
+ *
+ * @param {string} title - Banner title (emoji allowed).
+ * @returns {void}
+ */
+export function boxBanner(title) {
+  const text = ` ${title} `;
+  const width = Math.max(text.length + 2, 24);
+  const pad = width - text.length;
+  const left = Math.floor(pad / 2);
+  const right = pad - left;
+  const bar = "═".repeat(width);
+  console.log(`╔${bar}╗`);
+  console.log(`║${" ".repeat(left)}${text}${" ".repeat(right)}║`);
+  console.log(`╚${bar}╝`);
+}
+
+/**
+ * Prints a closing box line for a completed step.
+ *
+ * @param {string} title - Done title.
+ * @returns {void}
+ */
+export function boxDone(title) {
+  const text = ` ✅ ${title} `;
+  const width = Math.max(text.length + 2, 24);
+  const pad = width - text.length;
+  const left = Math.floor(pad / 2);
+  const right = pad - left;
+  const bar = "─".repeat(width);
+  console.log(`┌${bar}┐`);
+  console.log(`│${" ".repeat(left)}${text}${" ".repeat(right)}│`);
+  console.log(`└${bar}┘`);
+}
+
+/**
+ * Runs a CLI with boxed logs. Resolves the binary from `node_modules/.bin`.
+ *
+ * @param {object} options - Run options.
+ * @param {string} options.label - Human label for logs (e.g. `tsc:typecheck`).
+ * @param {string} options.bin - Binary name under `node_modules/.bin`.
+ * @param {string[]} [options.args] - Arguments passed to the binary.
+ * @returns {number} Process exit code.
+ */
+export function runTool(options) {
+  const { label, bin, args = [] } = options;
+  const { name, version } = readPackageIdentity();
+  boxBanner(`▶️  ${label} — ${name}@${version}`);
+  const quoted = args.map((arg) => JSON.stringify(arg)).join(" ");
+  try {
+    run(`npx --no -- ${bin}${quoted ? ` ${quoted}` : ""}`);
+    boxDone(label);
+    return 0;
+  } catch {
+    logError(`${label} failed`);
+    return 1;
+  }
+}
+
+/**
+ * Runs an npm package script (for orchestration like `check` / `tsc:build`).
+ *
+ * @param {string} script - Script name (e.g. `vitest:run`).
+ * @param {string[]} [args] - Extra args after `--`.
+ * @returns {number} Exit code.
+ */
+export function runNpmScript(script, args = []) {
+  const { name, version } = readPackageIdentity();
+  boxBanner(`▶️  npm run ${script} — ${name}@${version}`);
+  try {
+    const extra = args.map((arg) => JSON.stringify(arg)).join(" ");
+    run(`npm run ${JSON.stringify(script)}${extra ? ` -- ${extra}` : ""}`);
+    boxDone(`npm run ${script}`);
+    return 0;
+  } catch {
+    logError(`npm run ${script} failed`);
+    return 1;
+  }
 }
 
 /**
@@ -142,11 +232,11 @@ export function isInteractive() {
 }
 
 /**
- * Asks a yes/no question on TTY. Non-TTY callers must not reach this.
+ * Asks a yes/no question on TTY.
  *
- * @param {string} label - Question text shown to the user.
- * @param {boolean} [defaultYes=false] - Default when the user presses Enter.
- * @returns {Promise<boolean>} True when the answer is yes.
+ * @param {string} label - Question text.
+ * @param {boolean} [defaultYes=false] - Default on Enter.
+ * @returns {Promise<boolean>} True when yes.
  */
 export async function askYesNo(label, defaultYes = false) {
   const hint = defaultYes ? "Y/n" : "y/N";
@@ -163,10 +253,19 @@ export async function askYesNo(label, defaultYes = false) {
 }
 
 /**
+ * Whether `-y` / `--yes` was passed on argv.
+ *
+ * @returns {boolean} True when non-interactive yes was requested.
+ */
+export function hasYesFlag() {
+  return process.argv.slice(2).some((arg) => arg === "-y" || arg === "--yes");
+}
+
+/**
  * Returns whether any version of the package name exists on the registry.
  *
- * @param {string} name - Package name (e.g. `@scope/pkg`).
- * @returns {boolean} True when `npm view <name> version` succeeds.
+ * @param {string} name - Package name.
+ * @returns {boolean} True when visible on npm.
  */
 export function packageNameExistsOnRegistry(name) {
   try {
@@ -181,7 +280,7 @@ export function packageNameExistsOnRegistry(name) {
  * Returns whether the exact `name@version` exists on the registry.
  *
  * @param {string} spec - Specifier `name@version`.
- * @returns {boolean} True when `npm view <spec> version` succeeds.
+ * @returns {boolean} True when visible.
  */
 export function packageSpecExistsOnRegistry(spec) {
   try {
@@ -193,10 +292,9 @@ export function packageSpecExistsOnRegistry(spec) {
 }
 
 /**
- * Prints the npm whoami identity or throws with guidance.
+ * Prints the npm whoami identity or throws.
  *
  * @returns {string} Logged-in npm username.
- * @throws {Error} When `npm whoami` fails (not logged in).
  */
 export function requireNpmWhoami() {
   try {
@@ -216,7 +314,7 @@ export function requireNpmWhoami() {
  * Reads the latest published version string for a package name, if any.
  *
  * @param {string} name - Package name.
- * @returns {string | null} Version string, or null when the name is free.
+ * @returns {string | null} Version or null.
  */
 export function readPublishedVersion(name) {
   try {
@@ -231,7 +329,7 @@ export function readPublishedVersion(name) {
  * Sleeps for a number of milliseconds.
  *
  * @param {number} ms - Duration to wait.
- * @returns {Promise<void>} Resolves after the delay.
+ * @returns {Promise<void>}
  */
 export function sleep(ms) {
   return delay(ms);
@@ -240,14 +338,9 @@ export function sleep(ms) {
 /**
  * Polls the registry until the package name appears or the timeout elapses.
  *
- * 💡 npm can lag after a successful `npm publish`; call this before treating
- * reservation as verified. Default timeout is 300 seconds.
- *
- * @param {string} name - Package name to look up.
- * @param {{ timeoutMs?: number, intervalMs?: number }} [options] - Poll budget
- *   and interval (`timeoutMs` default `300000`, `intervalMs` default `10000`).
- * @returns {Promise<string | null>} Published version string, or `null` if still
- *   missing after the timeout.
+ * @param {string} name - Package name.
+ * @param {{ timeoutMs?: number, intervalMs?: number }} [options] - Poll options.
+ * @returns {Promise<string | null>} Version or null.
  */
 export async function waitForPackageNameOnRegistry(name, options = {}) {
   const timeoutMs = options.timeoutMs ?? 300_000;
@@ -288,10 +381,10 @@ export async function waitForPackageNameOnRegistry(name, options = {}) {
 }
 
 /**
- * Parses `owner/repo` from a git remote URL (SSH or HTTPS GitHub forms).
+ * Parses `owner/repo` from a git remote URL.
  *
- * @param {string} remoteUrl - Output of `git remote get-url origin`.
- * @returns {string | null} `owner/repo` or null when unparseable.
+ * @param {string} remoteUrl - Origin URL.
+ * @returns {string | null} owner/repo or null.
  */
 export function parseGithubOwnerRepo(remoteUrl) {
   const trimmed = remoteUrl.trim().replace(/\.git$/i, "");
@@ -309,8 +402,7 @@ export function parseGithubOwnerRepo(remoteUrl) {
 /**
  * Resolves `owner/repo` from the local `origin` remote.
  *
- * @returns {string} GitHub `owner/repo`.
- * @throws {Error} When origin is missing or not a GitHub URL.
+ * @returns {string} GitHub owner/repo.
  */
 export function requireGithubOwnerRepo() {
   let remoteUrl;
@@ -324,13 +416,4 @@ export function requireGithubOwnerRepo() {
     throw new Error(`Could not parse GitHub owner/repo from origin: ${remoteUrl}`);
   }
   return ownerRepo;
-}
-
-/**
- * Whether `-y` / `--yes` was passed on the process argv.
- *
- * @returns {boolean} True when non-interactive yes was requested.
- */
-export function hasYesFlag() {
-  return process.argv.slice(2).some((arg) => arg === "-y" || arg === "--yes");
 }

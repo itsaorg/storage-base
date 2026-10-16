@@ -1,23 +1,17 @@
+#!/usr/bin/env node
 // Copyright 2026 Astitv Singh <https://github.com/astitvsingh>.
 // SPDX-License-Identifier: Apache-2.0
 
 /**
- * Interactive, idempotent **first-time** npm name reservation (local only).
+ * npm script `npm:publish:local` — interactive, idempotent name reservation.
  *
- * 💡 Intended for the one-time publish that reserves the scoped package name
- * (e.g. `0.0.0`). Safe to re-run: if the package **name** already exists on
- * the registry, this script exits 0 and never publishes again.
- *
- * - No `--provenance` (provenance is for CI / `publish-npm-worker.mjs`).
- * - Publish path requires a TTY confirmation; non-TTY with a free name fails.
- * - After publish, polls npm for up to 300s before treating reservation as done.
- * - Package-agnostic: reads `../package.json` relative to `.devenv/`.
- *
- * @module publish-npm-local
+ * @module npm-publish-local
  */
 
 import {
   askYesNo,
+  boxBanner,
+  boxDone,
   isInteractive,
   logError,
   logGo,
@@ -30,17 +24,17 @@ import {
   requireNpmWhoami,
   run,
   waitForPackageNameOnRegistry,
-} from "./publish-npm-lib.mjs";
+} from "./tool-lib.mjs";
 
 /**
  * Reserves the package name on the public npm registry when still free.
  *
- * @returns {Promise<void>} Resolves on success or idempotent skip.
+ * @returns {Promise<void>}
  */
 async function main() {
-  logGo("publish:npm:local — interactive name reservation");
-
   const { name, version, spec } = readPackageIdentity();
+  boxBanner(`▶️  npm:publish:local — ${name}@${version}`);
+
   logInfo(`Package name: ${name}`);
   logInfo(`Local version: ${version}`);
   logInfo(`Publish spec: ${spec}`);
@@ -63,7 +57,7 @@ async function main() {
 
   if (!isInteractive()) {
     logError(
-      "Refusing to publish without a TTY. Run `npm run publish:npm:local` in an interactive terminal, or skip if the name is already reserved.",
+      "Refusing to publish without a TTY. Run `npm run npm:publish:local` interactively, or skip if reserved.",
     );
     process.exitCode = 1;
     return;
@@ -80,7 +74,7 @@ async function main() {
   }
 
   logGo("Building package…");
-  run("npm run build");
+  run("npm run tsc:build");
 
   logGo(`Publishing ${name}@${version}…`);
   run("npm publish --access public");
@@ -98,6 +92,7 @@ async function main() {
   }
 
   logOk(`Reserved ${name} on npm (registry version ${after}; local was ${version}).`);
+  boxDone("npm:publish:local");
   process.exitCode = 0;
 }
 

@@ -1,21 +1,17 @@
+#!/usr/bin/env node
 // Copyright 2026 Astitv Singh <https://github.com/astitvsingh>.
 // SPDX-License-Identifier: Apache-2.0
 
 /**
- * Configures npm Trusted Publishing for GitHub Actions (package-agnostic).
+ * npm script `npm:trust` — configure npm Trusted Publishing for GitHub Actions.
  *
- * 💡 Wraps `npm trust github` using the local `package.json` name and the
- * `origin` GitHub remote. Binds the Trusted Publisher to workflow filename
- * `release.yml` under `.github/workflows/` (npm wants the filename only).
- *
- * Requires npm CLI with `npm trust` support (npm 11+). Interactive TTY confirm
- * unless `-y` / `--yes` is passed.
- *
- * @module trust-npm-github
+ * @module npm-trust
  */
 
 import {
   askYesNo,
+  boxBanner,
+  boxDone,
   hasYesFlag,
   isInteractive,
   logError,
@@ -27,7 +23,7 @@ import {
   requireGithubOwnerRepo,
   requireNpmWhoami,
   run,
-} from "./publish-npm-lib.mjs";
+} from "./tool-lib.mjs";
 
 /** @type {string} Workflow filename Trusted Publishing must match. */
 const WORKFLOW_FILE = "release.yml";
@@ -38,11 +34,8 @@ const WORKFLOW_FILE = "release.yml";
  * @returns {Promise<void>}
  */
 async function main() {
-  logGo("trust:npm — configure npm Trusted Publishing for GitHub Actions");
-
   const { name, version } = readPackageIdentity();
-  logInfo(`Package name: ${name}`);
-  logInfo(`Local version: ${version}`);
+  boxBanner(`▶️  npm:trust — ${name}@${version}`);
 
   const user = requireNpmWhoami();
   logOk(`npm whoami: ${user}`);
@@ -76,6 +69,7 @@ async function main() {
   logInfo(
     `Verify in the browser: https://www.npmjs.com/package/${name}/access (Trusted Publisher section).`,
   );
+  boxDone("npm:trust");
   process.exitCode = 0;
 }
 

@@ -1,46 +1,28 @@
 #!/usr/bin/env sh
 # =============================================================================
-# 🔒 pre-commit — lint-staged then full CI gate (npm package.scripts)
+# 🔒 pre-commit — npm run lint-staged then npm run check
 # =============================================================================
-# 📌 1) Autofix staged files via lint-staged (package.json lint-staged config)
-#    2) Run read-mostly CI gate: typecheck → format:check → lint → layout →
-#       test:run → build (never test:coverage).
 # ▶️ Skip once: HUSKY=0 git commit …
 # =============================================================================
 
-# 📁 HUSKY_DIR: absolute path to this .husky directory
 HUSKY_DIR="$(CDPATH= cd -- "$(dirname "$0")" && pwd)"
-# 📥 source: load shared helpers and run_ci_gate
 . "$HUSKY_DIR/common.sh"
 
-# 🏷️ print hook banner with dynamic package identity
 log_hook_banner "pre-commit"
 
-# ▶️ announce lint-staged autofix pass
-log_go "lint-staged (staged autofix)"
-# ✅ if: lint-staged exits 0
-if npx --no -- lint-staged; then
-  # ✅ staged Prettier/ESLint passed
+log_go "npm run lint-staged"
+if npm run lint-staged; then
   log_ok "lint-staged"
-# ❌ else: lint-staged failed
 else
-  # ❌ stop commit on autofix/lint failure
-  log_err "lint-staged failed. Fix staged files and retry."
-  # 🚪 exit 1: abort commit
+  log_err "lint-staged failed"
   exit 1
-# 🔚 fi
 fi
 
-# 🧪 run shared CI gate via npm run scripts
-if run_ci_gate; then
-  # ✅ entire pre-commit path green
+log_go "npm run check"
+if npm run check; then
   log_ok "pre-commit passed for ${PKG_NAME}@${PKG_VERSION}"
-  # 🚪 exit 0: allow commit to continue to commit-msg
   exit 0
-# ❌ else: a gate step failed
 fi
 
-# ❌ gate failure message
-log_err "pre-commit failed (CI gate). Fix checks and retry."
-# 🚪 exit 1: abort commit
+log_err "pre-commit failed (check)"
 exit 1

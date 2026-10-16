@@ -1,8 +1,8 @@
 # =============================================================================
 # 🧪 CI — continuous integration on every push/PR to main and develop
 # =============================================================================
-# 📌 Purpose: prove typecheck, format, lint, layout, tests, and build are green
-#    before merge. Does NOT publish to npm (see workflows/release.yml for that).
+# 📌 Purpose: run `npm run check` (tsc:typecheck → prettier:check → eslint:lint
+#    → layout:check → vitest:run → tsc:build). Does NOT publish to npm.
 # ▶️ Example trigger: push a commit to `main`, or open a PR into `develop`.
 # =============================================================================
 
@@ -13,16 +13,16 @@ name: ci
 on:
   # 📤 push: run when commits land on these branch tips
   push:
-    # 🌿 branches: only these branch names (not every branch)
+    # 🌿 branches: only these branch names
     branches: [main, develop]
   # 🔀 pull_request: run on PRs targeting these branches
   pull_request:
     # 🌿 branches: base branches that receive the PR
     branches: [main, develop]
 
-# 🧩 jobs: named work units (one job here)
+# 🧩 jobs: named work units
 jobs:
-  # 🆔 ci: job id used in the UI and for needs:/status checks
+  # 🆔 ci: job id
   ci:
     # 🖥️ runs-on: GitHub-hosted runner image
     runs-on: ubuntu-latest
@@ -30,17 +30,7 @@ jobs:
     steps:
       # ⬇️ checkout: clone this repo into the runner workspace
       - uses: actions/checkout@v7
-      # 🧰 setup: composite action — Node from .nvmrc + npm ci
+      # 🧰 setup: Node from .nvmrc + npm ci
       - uses: ./.github/actions/setup
-      # ✅ typecheck: tsc --noEmit
-      - run: npm run typecheck
-      # 🎨 format:check: Prettier must already match (no write)
-      - run: npm run format:check
-      # 🧹 lint: ESLint over the repo
-      - run: npm run lint
-      # 📐 check:layout: one principal per source file
-      - run: npm run check:layout
-      # 🧪 test: Vitest (unit / consumer / integration globs)
-      - run: npm run test
-      # 📦 build: emit dist/ via tsc
-      - run: npm run build
+      # ✅ check: full CI gate via package.scripts → .devenv
+      - run: npm run check

@@ -10,31 +10,36 @@ git flow feature start <number>-<slug>
 
 Commit messages use Conventional Commits: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, `revert`.
 
+## Tool scripts
+
+Every `package.json` script is tool-prefixed and runs a shebang `.devenv/*.mjs` wrapper (boxed emoji logs). Prefer `npm run <script>` from hooks, CI, and local shells.
+
+| Script                      | Purpose                                                                                                   |
+| --------------------------- | --------------------------------------------------------------------------------------------------------- |
+| `npm run check`             | CI gate: `tsc:typecheck` → `prettier:check` → `eslint:lint` → `layout:check` → `vitest:run` → `tsc:build` |
+| `npm run vitest:run`        | Vitest once (no watch, no coverage/)                                                                      |
+| `npm run vitest:coverage`   | Opt-in coverage report (not in husky/CI gate)                                                             |
+| `npm run changeset:status`  | Changesets status                                                                                         |
+| `npm run npm:publish:local` | Interactive name reservation                                                                              |
+| `npm run npm:trust`         | Trusted Publishing setup                                                                                  |
+
 ## Husky hooks
 
-Hooks install via `npm prepare` (`husky`) and live under `.husky/`. Shared helpers are in `.husky/common.sh` (repo root + package name/version from `package.json`). Gates call `npm run <script>` so checks stay configurable in `package.json`.
+Hooks install via `npm prepare` → `husky:prepare`. They call **only** `npm run` scripts.
 
-| Hook          | What it runs                                                                                                |
-| ------------- | ----------------------------------------------------------------------------------------------------------- |
-| `pre-commit`  | `lint-staged`, then CI gate (`typecheck` → `format:check` → `lint` → `check:layout` → `test:run` → `build`) |
-| `commit-msg`  | `npm run commitlint -- --edit`                                                                              |
-| `pre-push`    | Same CI gate as pre-commit (no `lint-staged`, no `test:coverage`)                                           |
-| `post-commit` | Local success log (short SHA + package identity)                                                            |
+| Hook          | What it runs               |
+| ------------- | -------------------------- |
+| `pre-commit`  | `lint-staged` then `check` |
+| `commit-msg`  | `commitlint -- --edit`     |
+| `pre-push`    | `check`                    |
+| `post-commit` | Local success log          |
 
-Hooks never run `test:coverage` (avoids writing `coverage/`). Use `npm run test:coverage` when you want a coverage report. Skip once: `HUSKY=0 git commit …` or `HUSKY=0 git push …`. Do not edit files under `.husky/_/` (managed by the husky package).
+Skip once: `HUSKY=0 git commit …` or `HUSKY=0 git push …`. Do not edit `.husky/_/`.
 
-Trusted Publishing for `@itsaorg/storage-base` is already configured (GitHub Actions workflow `release.yml`).
+Trusted Publishing for `@itsaorg/storage-base` is already configured (workflow `release.yml`).
 
 ## Required checks
 
-Same as the husky CI gate (or `npm run check`):
-
 ```bash
 npm run check
-```
-
-Optional coverage (not in husky):
-
-```bash
-npm run test:coverage
 ```

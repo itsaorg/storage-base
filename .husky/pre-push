@@ -1,30 +1,20 @@
 #!/usr/bin/env sh
 # =============================================================================
-# 🚀 pre-push — full CI gate before push (npm package.scripts, no coverage/)
+# 🚀 pre-push — npm run check (no vitest:coverage)
 # =============================================================================
-# 📌 Runs typecheck → format:check → lint → layout → test:run → build.
-#    Does not run lint-staged or test:coverage (no coverage/ writes on push).
 # ▶️ Skip once: HUSKY=0 git push …
 # =============================================================================
 
-# 📁 HUSKY_DIR: absolute path to this .husky directory
 HUSKY_DIR="$(CDPATH= cd -- "$(dirname "$0")" && pwd)"
-# 📥 source: load shared helpers and run_ci_gate
 . "$HUSKY_DIR/common.sh"
 
-# 🏷️ print hook banner with dynamic package identity
 log_hook_banner "pre-push"
 
-# 🧪 run shared CI gate via npm run scripts
-if run_ci_gate; then
-  # ✅ push may proceed
+log_go "npm run check"
+if npm run check; then
   log_ok "pre-push passed for ${PKG_NAME}@${PKG_VERSION}"
-  # 🚪 exit 0: allow push
   exit 0
-# ❌ else: a gate step failed
 fi
 
-# ❌ gate failure message
-log_err "pre-push failed (CI gate). Fix checks before pushing."
-# 🚪 exit 1: abort push
+log_err "pre-push failed (check)"
 exit 1
