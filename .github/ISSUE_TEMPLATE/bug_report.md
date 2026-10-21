@@ -36,7 +36,7 @@ labels: bug
 
 ## Environment
 
-<!-- Node from .nvmrc (currently 26), OS, and the package version or commit. -->
+<!-- Node from .nvmrc, OS, and the package version or commit. -->
 
 - Node:
 - OS:
