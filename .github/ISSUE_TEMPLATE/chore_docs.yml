@@ -2,9 +2,44 @@ name: Chore or docs
 description: Tooling, docs, or maintenance
 labels: [chore]
 body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this for tooling, docs, or maintenance that does not change the public storage contracts.
+        Contract changes belong on a feature request.
   - type: textarea
     id: change
     attributes:
       label: Change
+      description: What you want updated (files, scripts, workflows, or docs).
+      placeholder: Document `npm run check` in CONTRIBUTING and …
     validations:
       required: true
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Motivation
+      description: Why this maintenance matters now.
+      placeholder: Contributors hit … because the docs still name the old script.
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope / out of scope
+      description: What this issue includes, and what it deliberately leaves alone. Optional.
+      placeholder: |
+        In: …
+        Out: product types under src/
+    validations:
+      required: false
+  - type: textarea
+    id: checklist
+    attributes:
+      label: Checklist notes
+      description: Verification you expect (for example `npm run check`, docs-only review). Optional.
+      placeholder: |
+        - [ ] `npm run check`
+        - [ ] No publish or version bump
+    validations:
+      required: false

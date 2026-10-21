@@ -2,21 +2,50 @@ name: Feature request
 description: Propose a contract change
 labels: [feature]
 body:
+  - type: markdown
+    attributes:
+      value: |
+        Propose a change to the `@itsaorg/storage-base` public contracts.
+        Breaking changes need an explicit call-out in Proposed change.
   - type: textarea
     id: problem
     attributes:
       label: Problem
+      description: The gap in the current types, errors, or lifecycle that this change addresses.
+      placeholder: Callers cannot express … without reaching past the public export.
     validations:
       required: true
   - type: textarea
     id: change
     attributes:
       label: Proposed change
+      description: The API or docs change you want. Name new or changed exports when you can.
+      placeholder: Add … to the package root export. Keep deep imports rejected.
     validations:
       required: true
   - type: textarea
     id: acceptance
     attributes:
-      label: Acceptance
+      label: Acceptance criteria
+      description: How we know the change is done. Tests, type checks, or docs that must pass.
+      placeholder: |
+        - [ ] `npm run check` stays green
+        - [ ] Consumer test covers …
     validations:
       required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Other shapes you rejected, and why. Optional.
+      placeholder: Leaving this on the caller side fails because …
+    validations:
+      required: false
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Links, downstream repos (for example storage-localfs), or sketches. Optional.
+      placeholder: …
+    validations:
+      required: false

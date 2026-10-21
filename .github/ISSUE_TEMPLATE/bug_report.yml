@@ -2,15 +2,62 @@ name: Bug report
 description: Report a defect in this repository
 labels: [bug]
 body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a defect in `@itsaorg/storage-base`.
+        Fill every required section. The submitted issue body uses these same headings.
   - type: textarea
     id: summary
     attributes:
       label: Summary
+      description: What is broken, in one or two sentences.
+      placeholder: Page address parsing rejects a valid offset when …
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What the contract or docs say should happen.
+      placeholder: The call should return … / throw StorageError with code …
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: What happened instead, including the error text if any.
+      placeholder: "Threw TypeError: …"
     validations:
       required: true
   - type: textarea
     id: steps
     attributes:
       label: Steps to reproduce
+      description: Smallest sequence that shows the defect. Prefer a snippet over a narrative.
+      placeholder: |
+        1. …
+        2. …
+        3. …
     validations:
       required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Node from `.nvmrc` (currently 26), OS, and the package version or commit you ran.
+      placeholder: |
+        - Node: 26.x
+        - OS: …
+        - Package: @itsaorg/storage-base@0.0.0 (commit …)
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Logs, related issues, or anything else that helps. Optional.
+      placeholder: …
+    validations:
+      required: false

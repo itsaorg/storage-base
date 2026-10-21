@@ -2,10 +2,10 @@
 
 Zero-dependency TypeScript contracts for Itsa storage addresses, pages, I/O, lifecycle, and errors.
 
-## 🗂️ Table of contents
+## 🗂️ Table Of Contents
 
 - [@itsaorg/storage-base](#itsaorgstorage-base)
-  - [🗂️ Table of contents](#️-table-of-contents)
+  - [🗂️ Table Of Contents](#️-table-of-contents)
   - [What this package is](#what-this-package-is)
   - [Requirements](#requirements)
   - [Install](#install)

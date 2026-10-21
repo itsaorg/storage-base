@@ -1,5 +1,13 @@
 # Contributing
 
+## 🗂️ Table Of Contents
+
+- [Contributing](#contributing)
+  - [🗂️ Table Of Contents](#️-table-of-contents)
+  - [Tool scripts](#tool-scripts)
+  - [Husky hooks](#husky-hooks)
+  - [Required checks](#required-checks)
+
 Branches follow Git Flow AVH: `main`, `develop`, `feature/`, `bugfix/`, `release/`, `hotfix/`, `support/`, and tag prefix `v`.
 
 Start a feature from `develop`:
