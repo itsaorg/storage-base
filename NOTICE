@@ -1,7 +1,7 @@
 @itsaorg/storage-base
 Zero-dependency TypeScript contracts for Itsa storage addresses, pages, I/O, lifecycle, and errors.
 
-Copyright 2026 Astitv Singh
+Copyright © 2026 Astitv Singh
 
 This product is licensed under the Apache License, Version 2.0.
 See the LICENSE file in this directory.
