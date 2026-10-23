@@ -1,6 +1,65 @@
+# =============================================================================
+# 🙈 .gitignore — paths Git must not track
+# =============================================================================
+# 📌 Purpose: keep install trees, build output, secrets, and editor junk
+#    out of commits. Source, configs, .github/, .husky/, and .devenv/ stay tracked.
+# ⚠️ Path is REQUIRED: repo-root `.gitignore`.
+# ▶️ Example: `npm run tsc:build` writes dist/, and `git status` does not list it.
+# =============================================================================
+
+# 📦 node_modules/: npm install tree (recreated by npm ci)
 node_modules/
+
+# 🏗️ dist/: tsc:emit and tsc:build output
 dist/
+
+# 🧾 *.tsbuildinfo: TypeScript incremental cache
+*.tsbuildinfo
+
+# 📊 coverage/: vitest:coverage report
 coverage/
-.env*
-.DS_Store
+
+# 📚 docs/: TypeDoc output (regenerated, not hand-edited)
+docs/
+
+# 🔐 .env: local environment file with secrets
+.env
+
+# 🔐 .env.*: local overrides such as .env.local
+.env.*
+
+# 📝 *.log: generic tool logs
 *.log
+
+# 📝 npm-debug.log*: npm crash logs
+npm-debug.log*
+
+# 📝 yarn-debug.log*: Yarn debug logs
+yarn-debug.log*
+
+# 📝 yarn-error.log*: Yarn error logs
+yarn-error.log*
+
+# 📝 pnpm-debug.log*: pnpm debug logs
+pnpm-debug.log*
+
+# 🍎 .DS_Store: macOS folder metadata
+.DS_Store
+
+# 🪟 Thumbs.db: Windows thumbnail cache
+Thumbs.db
+
+# 🪟 Desktop.ini: Windows folder settings
+Desktop.ini
+
+# 💡 .idea/: JetBrains IDE project directory
+.idea/
+
+# ✏️ *.swp: Vim swap file
+*.swp
+
+# ✏️ *.swo: Vim swap file (alternate)
+*.swo
+
+# 📌 .devenv/ is committed setup code. Do not ignore it.
+#    Also leave .vscode/, .github/, .husky/, src/, and configs/ tracked.
