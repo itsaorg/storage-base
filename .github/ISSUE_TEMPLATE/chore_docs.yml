@@ -21,6 +21,7 @@ body:
       # 📃 value: intro shown above the fields
       value: |
         Use this for tooling, docs, or maintenance that does not change the public storage contracts.
+        This form applies the chore label. See CONTRIBUTING.md for the label guide.
         Contract changes belong on a feature request.
   # 📝 textarea: the update itself
   - type: textarea

@@ -60,6 +60,7 @@ You do not need a finished exploit. A clear description is enough to start.
 - Proof-of-concept code, payloads, or screenshots that show the flaw.
 - The report text, even if you remove the repository name.
 - A public issue titled "security" with the details in the body.
+- A security label on a public issue. This repository has no public security label.
 
 Public bug and feature templates are for non-security work. See `.github/ISSUE_TEMPLATE/`.
 

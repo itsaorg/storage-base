@@ -4,6 +4,8 @@ about: Propose a contract change
 labels: feature
 ---
 
+This template applies the `feature` label. See `.github/CONTRIBUTING.md` for the label guide.
+
 ## 🗂️ Table Of Contents
 
 - [🗂️ Table Of Contents](#️-table-of-contents)

@@ -21,6 +21,7 @@ body:
       # 📃 value: intro shown above the fields
       value: |
         Propose a change to the public contracts in this repository.
+        This form applies the feature label. See CONTRIBUTING.md for the label guide.
         Breaking changes need an explicit call-out in Proposed change.
   # 📝 textarea: the gap this change closes
   - type: textarea

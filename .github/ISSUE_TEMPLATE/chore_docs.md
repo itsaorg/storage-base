@@ -4,6 +4,8 @@ about: Tooling, docs, or maintenance
 labels: chore
 ---
 
+This template applies the `chore` label. See `.github/CONTRIBUTING.md` for the label guide.
+
 ## 🗂️ Table Of Contents
 
 - [🗂️ Table Of Contents](#️-table-of-contents)
