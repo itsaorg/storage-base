@@ -11,8 +11,10 @@
 name: Bug report
 # 📄 description: one-line card subtitle
 description: Report a defect in this repository
+# 🏷️ title: default issue title; replace <slug> before submitting
+title: "🐞 BUG: <slug>"
 # 🏷️ labels: labels applied when the issue is opened
-labels: [bug]
+labels: ["🐞 Bug Report"]
 # 📋 body: ordered form elements
 body:
   # 📝 markdown: static text, not a submitted field
@@ -23,7 +25,7 @@ body:
       value: |
         Thanks for reporting a defect in this repository.
         If this is a vulnerability, stop and follow SECURITY.md. Do not add a security label.
-        Otherwise this form applies the bug label. Fill every required section.
+        Otherwise this form applies the 🐞 Bug Report label. Fill every required section.
   # 📝 textarea: multi-line input
   - type: textarea
     # 🆔 id: stable field id (not shown as the heading)

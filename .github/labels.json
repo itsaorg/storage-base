@@ -1,18 +1,23 @@
 [
   {
-    "name": "🐞 Bug",
-    "description": "Issue Type: Bug or unexpected behavior. Applied by the Markdown bug report.",
+    "name": "🐞 Bug Report",
+    "description": "Issue Type: Bug or unexpected behavior. Applied by the bug report templates.",
     "color": "d73a4a"
   },
   {
-    "name": "✨ Feature",
-    "description": "Issue Type: New feature or enhancement. Hand-applied twin of feature.",
+    "name": "✨ Feature Request",
+    "description": "Issue Type: New feature or enhancement. Applied by the feature request templates.",
     "color": "a2eeef"
   },
   {
     "name": "📚 Documentation",
     "description": "Issue Type: Documentation improvements. Hand-applied when the change is docs only.",
     "color": "0075ca"
+  },
+  {
+    "name": "🧹 Chore",
+    "description": "Issue Type: Tooling or maintenance. Applied by the chore template and release notes.",
+    "color": "c5def5"
   },
   {
     "name": "❓ Question",
@@ -40,31 +45,6 @@
     "color": "fef2c0"
   },
   {
-    "name": "bug",
-    "description": "Issue Type: Exact name applied by the YAML bug form.",
-    "color": "d73a4a"
-  },
-  {
-    "name": "feature",
-    "description": "Issue Type: Exact name applied by the feature template and release notes.",
-    "color": "a2eeef"
-  },
-  {
-    "name": "chore",
-    "description": "Issue Type: Exact name applied by the chore template and release notes.",
-    "color": "c5def5"
-  },
-  {
-    "name": "fix",
-    "description": "Issue Type: Exact name used by release notes for fixes.",
-    "color": "d73a4a"
-  },
-  {
-    "name": "documentation",
-    "description": "Issue Type: GitHub default docs label. Use when the change is docs only.",
-    "color": "0075ca"
-  },
-  {
     "name": "🗂️ Status: Backlog",
     "description": "Status: In backlog, not yet prioritized",
     "color": "e3e3e3"
@@ -85,7 +65,7 @@
     "color": "dbab09"
   },
   {
-    "name": "🧪 Status: Testing",
+    "name": "🧫 Status: Testing",
     "description": "Status: Under testing or QA review",
     "color": "e11d21"
   },
@@ -140,19 +120,9 @@
     "color": "7d4b12"
   },
   {
-    "name": "🛠️ Git Flow: Support",
+    "name": "🛟 Git Flow: Support",
     "description": "Git Flow: Long-term support fixes",
     "color": "ffa500"
-  },
-  {
-    "name": "🧩 Good First Issue",
-    "description": "Community: Hand-applied twin for newcomers. GitHub reads good first issue.",
-    "color": "7057ff"
-  },
-  {
-    "name": "🙋 Help Wanted",
-    "description": "Community: Hand-applied twin when extra attention is needed. GitHub reads help wanted.",
-    "color": "008672"
   },
   {
     "name": "good first issue",
@@ -170,18 +140,13 @@
     "color": "b60205"
   },
   {
-    "name": "🔍 Needs Triage",
+    "name": "📥 Needs Triage",
     "description": "Change: Needs review and categorization",
     "color": "d876e3"
   },
   {
     "name": "🔗 Dependencies",
-    "description": "Change: Hand-applied twin for dependency updates. Dependabot applies dependencies.",
-    "color": "0366d6"
-  },
-  {
-    "name": "dependencies",
-    "description": "Change: Exact name Dependabot applies.",
+    "description": "Change: Dependabot applies this label to dependency update pull requests.",
     "color": "0366d6"
   },
   {

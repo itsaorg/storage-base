@@ -1,10 +1,11 @@
 ---
 name: Chore or docs
 about: Tooling, docs, or maintenance
-labels: chore
+title: "🧹 CHORE: <slug>"
+labels: "🧹 Chore"
 ---
 
-This template applies the `chore` label. See `.github/CONTRIBUTING.md` for the label guide.
+This template applies the `🧹 Chore` label. See `.github/CONTRIBUTING.md` for the label guide.
 
 ## 🗂️ Table Of Contents
 

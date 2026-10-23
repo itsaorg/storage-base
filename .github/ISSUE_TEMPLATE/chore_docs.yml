@@ -10,8 +10,10 @@
 name: Chore or docs
 # 📄 description: one-line card subtitle
 description: Tooling, docs, or maintenance
+# 🏷️ title: default issue title; replace <slug> before submitting
+title: "🧹 CHORE: <slug>"
 # 🏷️ labels: labels applied when the issue is opened
-labels: [chore]
+labels: ["🧹 Chore"]
 # 📋 body: ordered form elements
 body:
   # 📝 markdown: static intro, not a submitted field
@@ -21,7 +23,7 @@ body:
       # 📃 value: intro shown above the fields
       value: |
         Use this for tooling, docs, or maintenance that does not change the public storage contracts.
-        This form applies the chore label. See CONTRIBUTING.md for the label guide.
+        This form applies the 🧹 Chore label. See CONTRIBUTING.md for the label guide.
         Contract changes belong on a feature request.
   # 📝 textarea: the update itself
   - type: textarea

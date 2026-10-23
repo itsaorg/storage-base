@@ -1,35 +1,35 @@
 ---
 name: Bug Report
 about: Create a report to help us improve
-title: "[BUG]: <slug>"
-labels: "🐞 Bug"
+title: "🐞 BUG: <slug>"
+labels: "🐞 Bug Report"
 ---
 
-If this is a vulnerability, stop. Follow `.github/SECURITY.md`. Do not add a security label. Otherwise this template applies `🐞 Bug`. See `.github/CONTRIBUTING.md` for the label guide.
+If this is a vulnerability, stop. Follow `.github/SECURITY.md`. Do not add a security label. Otherwise this template applies `🐞 Bug Report`. See `.github/CONTRIBUTING.md` for the label guide.
 
 ## 🗂️ Table Of Contents
 
 - [🗂️ Table Of Contents](#️-table-of-contents)
 - [🧾 Summary](#-summary)
-- [✅ Expected behavior](#-expected-behavior)
-- [❌ Actual behavior](#-actual-behavior)
-- [🔁 Steps to reproduce](#-steps-to-reproduce)
+- [✅ Expected Behavior](#-expected-behavior)
+- [❌ Actual Behavior](#-actual-behavior)
+- [🔁 Steps to Reproduce](#-steps-to-reproduce)
 - [💻 Environment](#-environment)
-- [📎 Additional context](#-additional-context)
+- [📎 Additional Context](#-additional-context)
 
 ## 🧾 Summary
 
 <!-- What is broken, in one or two sentences. -->
 
-## ✅ Expected behavior
+## ✅ Expected Behavior
 
 <!-- What the contract or docs say should happen. -->
 
-## ❌ Actual behavior
+## ❌ Actual Behavior
 
 <!-- What happened instead, including the error text if any. -->
 
-## 🔁 Steps to reproduce
+## 🔁 Steps to Reproduce
 
 <!-- Smallest sequence that shows the defect. -->
 
@@ -41,10 +41,10 @@ If this is a vulnerability, stop. Follow `.github/SECURITY.md`. Do not add a sec
 
 <!-- OS, Node from .nvmrc, and the package version or commit. -->
 
-- OS:
+- OS: (name and version)
 - Node: (version in .nvmrc)
 - Package: (name and version from package.json)
 
-## 📎 Additional context
+## 📎 Additional Context
 
 <!-- Logs, related issues, or anything else. Optional. -->

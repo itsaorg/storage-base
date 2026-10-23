@@ -1,10 +1,11 @@
 ---
 name: Feature request
 about: Propose a contract change
-labels: feature
+title: "✨ FEAT: <slug>"
+labels: "✨ Feature Request"
 ---
 
-This template applies the `feature` label. See `.github/CONTRIBUTING.md` for the label guide.
+This template applies the `✨ Feature Request` label. See `.github/CONTRIBUTING.md` for the label guide.
 
 ## 🗂️ Table Of Contents
 

@@ -11,7 +11,7 @@
   - [💬 Commit messages](#-commit-messages)
   - [🪝 Husky hooks](#-husky-hooks)
   - [🐛 Open an issue](#-open-an-issue)
-  - [🏷️ Labels](#-labels)
+  - [🏷️ Labels](#️-labels)
   - [🔀 Open a pull request](#-open-a-pull-request)
   - [✅ Required check](#-required-check)
 
@@ -174,12 +174,12 @@ Security and conduct reports do not use these templates. Use `.github/SECURITY.m
 
 The template applies the type label. Do not also invent a label name.
 
-1. Bug report: the Markdown card applies `🐞 Bug`. The YAML form applies `bug`.
-2. Feature request: the template applies `feature`.
-3. Chore or docs: the template applies `chore`. Use `📚 Documentation` or `documentation` only when the change is docs and not tooling.
+1. Bug report: both the Markdown card and the YAML form apply `🐞 Bug Report`.
+2. Feature request: both formats apply `✨ Feature Request`.
+3. Chore or docs: both formats apply `🧹 Chore`. Add `📚 Documentation` by hand when the change is docs and not tooling.
 4. Do not open a public issue for a vulnerability or a conduct report, and do not add a security label. Use `.github/SECURITY.md`.
 5. Maintainers apply Status, Priority, and Git Flow labels. Contributors do not need to set those.
-6. `good first issue` and `help wanted` are the exact names GitHub's Contribute and help-wanted views read. `dependencies` is the label Dependabot applies. The emoji twins are for people applying a label by hand.
+6. `good first issue` and `help wanted` are the exact names GitHub's Contribute and help-wanted views read. Dependabot applies `🔗 Dependencies` and opens branches under `dependabot/`.
 
 The full set lives in `.github/labels.json`.
 

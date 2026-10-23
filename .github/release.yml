@@ -17,12 +17,15 @@ changelog:
     - title: Features
       # 🏷️ labels: PR/issue labels that land in this section
       labels:
-        - feature
+        - "✨ Feature Request"
+        - "🌟 Git Flow: Feature"
     # 🐛 Fixes section
     - title: Fixes
       labels:
-        - fix
+        - "🐛 Git Flow: Bugfix"
+        - "🐞 Bug Report"
     # 🔧 Chores section
     - title: Chores
       labels:
-        - chore
+        - "🧹 Chore"
+        - "📚 Documentation"
