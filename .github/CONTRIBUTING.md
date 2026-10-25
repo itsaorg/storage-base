@@ -68,7 +68,7 @@ Put product types under `src/`. Do not add a root `types/` directory. The publis
 
 ## 🧪 Scripts
 
-Every `package.json` script name starts with the tool, then an action (`tsc:typecheck`, `vitest:run`). Each script runs `node .devenv/<file>.mjs`. Call them with `npm run`. Do not call `tsc`, `eslint`, or `vitest` directly.
+Every `package.json` script name starts with the tool, then an action (`tsc:typecheck`, `vitest:run`). Each script runs `node .devenv/scripts/tools/<tool>/<action>.mjs`. Call them with `npm run`. Do not call `tsc`, `eslint`, or `vitest` directly.
 
 | Script                              | What it does                                                                                                   | Writes files?                                      |
 | ----------------------------------- | -------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
@@ -98,6 +98,9 @@ Every `package.json` script name starts with the tool, then an action (`tsc:type
 | `npm run npm:release`               | `tsc:build`, then `npm:publish:worker`                                                                         | Yes, `dist/` and npm                               |
 | `npm run npm:trust`                 | Link Trusted Publishing                                                                                        | Yes, npm trust settings                            |
 | `npm run npm:deprecate:reservation` | Deprecate a name-reservation publish                                                                           | Yes, npm deprecation message                       |
+| `npm run setup`                     | `npm ci`, Husky hooks, then `check`                                                                            | Yes, `node_modules/` and `dist/`                   |
+| `npm run setup:post-clone`          | Git and Node checks, then the same steps as `setup`, plus an optional label sync                               | Yes, `node_modules/` and `dist/`                   |
+| `npm run setup:labels`              | Sync `.github/labels.json` with `gh`                                                                           | Yes, GitHub labels                                 |
 
 Do not run the `npm:*` scripts unless a maintainer asked you to publish or change trust. When Trusted Publishing is configured, it is bound to `.github/workflows/release.yml`.
 

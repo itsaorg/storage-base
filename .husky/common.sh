@@ -3,7 +3,7 @@
 # 🧰 .husky/common.sh — shared helpers for package-agnostic Git hooks
 # =============================================================================
 # 📌 Purpose: resolve the repo root, read package.json identity dynamically,
-#    and provide emoji log helpers. Gates live in `npm run check` (.devenv).
+#    and provide emoji log helpers. Gates live in `npm run check` (`.devenv/scripts`).
 # ⚠️ Do NOT source .husky/_/husky.sh (deprecated in Husky v9+, fails in v10).
 # 📥 Usage: each hook sets HUSKY_DIR then runs `. "$HUSKY_DIR/common.sh"`.
 # =============================================================================
