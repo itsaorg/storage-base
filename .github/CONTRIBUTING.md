@@ -68,7 +68,7 @@ Put product types under `src/`. Do not add a root `types/` directory. The publis
 
 ## 🧪 Scripts
 
-Every `package.json` script name starts with the tool, then an action (`tsc:typecheck`, `vitest:run`). Each script runs `node .devenv/_/tools/<tool>/<action>.mjs`. Call them with `npm run`. Do not call `tsc`, `eslint`, or `vitest` directly. Every code file starts with the boxed banner: emoji title, what the file does, how to run or load it, and the Apache-2.0 copyright.
+Every `package.json` script name starts with the tool, then an action (`tsc:typecheck`, `vitest:run`). Tool scripts run `node .devenv/_/tools/<tool>/<action>.mjs`. Clean scripts run `node .devenv/_/utils/clean.mjs`. Call them with `npm run`. Do not call `tsc`, `eslint`, or `vitest` directly. Every code file starts with the boxed banner: emoji title, what the file does, how to run or load it, and the Apache-2.0 copyright.
 
 | Script                              | What it does                                                                                                   | Writes files?                                      |
 | ----------------------------------- | -------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
@@ -76,7 +76,10 @@ Every `package.json` script name starts with the tool, then an action (`tsc:type
 | `npm run tsc:typecheck`             | Typecheck only (`tsc --noEmit`)                                                                                | No                                                 |
 | `npm run tsc:emit`                  | Emit JavaScript and declarations into `dist/`                                                                  | Yes, `dist/`                                       |
 | `npm run tsc:build`                 | `dist:clean`, then `tsc:emit`                                                                                  | Yes, replaces `dist/`                              |
-| `npm run dist:clean`                | Delete `dist/`                                                                                                 | Yes, deletes `dist/`                               |
+| `npm run dist:clean`                | Delete `dist/` through `_/utils/clean.mjs`                                                                     | Yes, deletes `dist/`                               |
+| `npm run coverage:clean`            | Delete `coverage/` through `_/utils/clean.mjs`                                                                 | Yes, deletes `coverage/`                           |
+| `npm run docs:clean`                | Delete `docs/` through `_/utils/clean.mjs`                                                                     | Yes, deletes `docs/`                               |
+| `npm run modules:clean`             | Delete `node_modules/` through `_/utils/clean.mjs`                                                             | Yes, deletes `node_modules/`                       |
 | `npm run prettier:check`            | Check formatting                                                                                               | No                                                 |
 | `npm run prettier:write`            | Rewrite formatting                                                                                             | Yes, source and docs                               |
 | `npm run eslint:lint`               | Lint                                                                                                           | No                                                 |

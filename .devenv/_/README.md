@@ -15,6 +15,7 @@ The boxed banner at the top of every code file is the file-header standard. A JS
 .devenv/_/devenv/node/check.mjs
 .devenv/_/devenv/npm/*.mjs
 .devenv/_/tools/<tool>/<action>.mjs
+.devenv/_/utils/clean.mjs
 .devenv/_/setup/*.mjs
 ```
 
