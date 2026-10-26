@@ -1,4 +1,17 @@
 #!/usr/bin/env sh
+# ==============================================================
+# 🚀 pre-push
+# ---------------------------------------------------------------
+# Run the full CI gate before refs leave the machine.
+#
+# HOW TO RUN:
+#   git push
+#
+# ---------------------------------------------------------------
+# Copyright 2025-2026 © Astitv Singh <https://github.com/astitvsingh>.
+# Author: Astitv Singh <https://github.com/astitvsingh>
+# SPDX-License-Identifier: Apache-2.0
+# ==============================================================
 # =============================================================================
 # 🚀 pre-push — run the full CI gate before refs leave the machine
 # =============================================================================
@@ -27,7 +40,7 @@ log_hook_banner "pre-push"
 log_go "npm run check"
 
 # 🧪 if: check success → allow push; else fall through to failure
-# 🔤 npm run check: package.scripts → node .devenv/scripts/tools/check/run.mjs
+# 🔤 npm run check: package.scripts → node .devenv/_/tools/check/run.mjs
 if npm run check; then
   # ✅ full gate passed for this package@version
   log_ok "pre-push passed for ${PKG_NAME}@${PKG_VERSION}"

@@ -1,3 +1,17 @@
+/** ==============================================================
+ * 🧹 ESLint config
+ * ---------------------------------------------------------------
+ * Flat config for TypeScript, JavaScript, and Prettier.
+ *
+ * HOW TO RUN:
+ *   npm run eslint:lint
+ *
+ * ---------------------------------------------------------------
+ * Copyright 2025-2026 © Astitv Singh <https://github.com/astitvsingh>.
+ * Author: Astitv Singh <https://github.com/astitvsingh>
+ * SPDX-License-Identifier: Apache-2.0
+ * ============================================================== */
+
 import { fileURLToPath } from "node:url";
 import eslint from "@eslint/js";
 import tseslint from "typescript-eslint";

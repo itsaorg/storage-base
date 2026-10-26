@@ -1,4 +1,17 @@
 #!/usr/bin/env sh
+# ==============================================================
+# 🎉 post-commit
+# ---------------------------------------------------------------
+# Local success notice after a commit lands.
+#
+# HOW TO RUN:
+#   git commit
+#
+# ---------------------------------------------------------------
+# Copyright 2025-2026 © Astitv Singh <https://github.com/astitvsingh>.
+# Author: Astitv Singh <https://github.com/astitvsingh>
+# SPDX-License-Identifier: Apache-2.0
+# ==============================================================
 # =============================================================================
 # 🎉 post-commit — local success notice after a commit lands
 # =============================================================================

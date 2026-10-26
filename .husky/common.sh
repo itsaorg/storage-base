@@ -1,9 +1,23 @@
 #!/usr/bin/env sh
+# ==============================================================
+# 🧰 Hook helpers
+# ---------------------------------------------------------------
+# Shared helpers for package-agnostic Git hooks. Gates live in
+# `npm run check` (`.devenv/_`).
+#
+# HOW TO RUN:
+#   Sourced by each hook after HUSKY_DIR is set.
+#
+# ---------------------------------------------------------------
+# Copyright 2025-2026 © Astitv Singh <https://github.com/astitvsingh>.
+# Author: Astitv Singh <https://github.com/astitvsingh>
+# SPDX-License-Identifier: Apache-2.0
+# ==============================================================
 # =============================================================================
 # 🧰 .husky/common.sh — shared helpers for package-agnostic Git hooks
 # =============================================================================
 # 📌 Purpose: resolve the repo root, read package.json identity dynamically,
-#    and provide emoji log helpers. Gates live in `npm run check` (`.devenv/scripts`).
+#    and provide emoji log helpers. Gates live in `npm run check` (`.devenv/_`).
 # ⚠️ Do NOT source .husky/_/husky.sh (deprecated in Husky v9+, fails in v10).
 # 📥 Usage: each hook sets HUSKY_DIR then runs `. "$HUSKY_DIR/common.sh"`.
 # =============================================================================

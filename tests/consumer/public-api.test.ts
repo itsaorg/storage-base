@@ -1,5 +1,17 @@
-// Copyright 2026 Astitv Singh <https://github.com/astitvsingh>.
-// SPDX-License-Identifier: Apache-2.0
+/** ==============================================================
+ * 🧪 Public API test
+ * ---------------------------------------------------------------
+ * Consumer test for the package entry: one root export and no
+ * deep imports.
+ *
+ * HOW TO RUN:
+ *   npm run vitest:run
+ *
+ * ---------------------------------------------------------------
+ * Copyright 2025-2026 © Astitv Singh <https://github.com/astitvsingh>.
+ * Author: Astitv Singh <https://github.com/astitvsingh>
+ * SPDX-License-Identifier: Apache-2.0
+ * ============================================================== */
 
 import { describe, expect, it } from "vitest";
 import { execFileSync } from "node:child_process";

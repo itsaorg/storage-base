@@ -68,7 +68,7 @@ Put product types under `src/`. Do not add a root `types/` directory. The publis
 
 ## 🧪 Scripts
 
-Every `package.json` script name starts with the tool, then an action (`tsc:typecheck`, `vitest:run`). Each script runs `node .devenv/scripts/tools/<tool>/<action>.mjs`. Call them with `npm run`. Do not call `tsc`, `eslint`, or `vitest` directly.
+Every `package.json` script name starts with the tool, then an action (`tsc:typecheck`, `vitest:run`). Each script runs `node .devenv/_/tools/<tool>/<action>.mjs`. Call them with `npm run`. Do not call `tsc`, `eslint`, or `vitest` directly. Every code file starts with the boxed banner: emoji title, what the file does, how to run or load it, and the Apache-2.0 copyright.
 
 | Script                              | What it does                                                                                                   | Writes files?                                      |
 | ----------------------------------- | -------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- |

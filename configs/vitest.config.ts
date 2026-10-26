@@ -1,3 +1,17 @@
+/** ==============================================================
+ * 🧪 Vitest config
+ * ---------------------------------------------------------------
+ * Test pool, include globs, and coverage reporters.
+ *
+ * HOW TO RUN:
+ *   npm run vitest:run
+ *
+ * ---------------------------------------------------------------
+ * Copyright 2025-2026 © Astitv Singh <https://github.com/astitvsingh>.
+ * Author: Astitv Singh <https://github.com/astitvsingh>
+ * SPDX-License-Identifier: Apache-2.0
+ * ============================================================== */
+
 import { defineConfig } from "vitest/config";
 import { fileURLToPath } from "node:url";
 
