@@ -65,9 +65,7 @@ export const repoRoot = findRepoRoot(path.dirname(fileURLToPath(import.meta.url)
  * @property {string} name - npm package name from `package.json`.
  * @property {string} version - Semver version from `package.json`.
  * @property {string} spec - Combined `name@version` publish specifier.
- */
-
-/**
+ *
  * Reads and parses the root `package.json`.
  *
  * @returns {PackageIdentity} Name, version, and combined spec.
